@@ -636,6 +636,9 @@ struct rockchip_drm_hdmi21_data {
 
 void rockchip_connector_update_vfp_for_vrr(struct drm_crtc *crtc, struct drm_display_mode *mode,
 					   int vfp);
+void rockchip_drm_encoder_set_crtc_endpoint_id(struct rockchip_encoder *encoder,
+					       struct device_node *np,
+					       int port, int endpoint);
 int rockchip_drm_dma_attach_device(struct drm_device *drm_dev,
 				   struct device *dev);
 void rockchip_drm_dma_detach_device(struct drm_device *drm_dev,

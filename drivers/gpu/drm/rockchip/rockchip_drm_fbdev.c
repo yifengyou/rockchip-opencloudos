@@ -65,7 +65,6 @@ static int rockchip_drm_fbdev_create(struct drm_fb_helper *helper,
 
 	fbi = drm_fb_helper_alloc_info(helper);
 	if (IS_ERR(fbi)) {
-		DRM_DEV_ERROR(dev->dev, "Failed to create framebuffer info.\n");
 		ret = PTR_ERR(fbi);
 		goto out;
 	}

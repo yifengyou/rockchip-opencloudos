@@ -1080,6 +1080,25 @@ u8 rockchip_drm_parse_hdr10_plus_vsdb(const struct edid *edid)
 }
 EXPORT_SYMBOL(rockchip_drm_parse_hdr10_plus_vsdb);
 
+void rockchip_drm_encoder_set_crtc_endpoint_id(struct rockchip_encoder *encoder,
+					       struct device_node *np,
+					       int port, int endpoint)
+{
+	struct device_node *ep, *local;
+	u32 reg = 0;
+
+	local = of_graph_get_endpoint_by_regs(np, port, endpoint);
+	if (!local)
+		return;
+
+	if (of_property_read_u32(local, "reg", &reg))
+		reg = endpoint;
+
+	encoder->crtc_endpoint_id = reg;
+	of_node_put(local);
+}
+EXPORT_SYMBOL(rockchip_drm_encoder_set_crtc_endpoint_id);
+
 /*
  * Attach a (component) device to the shared drm dma mapping from master drm
  * device.  This is used by the VOPs to map GEM buffers to a common DMA
@@ -2032,7 +2051,6 @@ static int rockchip_drm_gem_dmabuf_end_cpu_access(struct dma_buf *dma_buf,
 }
 
 static const struct dma_buf_ops rockchip_drm_gem_prime_dmabuf_ops = {
-	.cache_sgt_mapping = true,
 	.attach = drm_gem_map_attach,
 	.detach = drm_gem_map_detach,
 	.map_dma_buf = drm_gem_map_dma_buf,
